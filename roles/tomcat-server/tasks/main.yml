@@ -41,9 +41,6 @@
 
 - name: deploy the content in tomcat
   copy:
-    src: sample.war
+    src: devOpsWeb.war
     dest: /opt/apache-tomcat-9.0.95/webapps
     mode: '777' 
-
-
-         
