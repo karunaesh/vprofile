@@ -1,0 +1,3 @@
+---
+# vars file for tomcat-server
+tomcat_port: 7775

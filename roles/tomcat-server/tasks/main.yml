@@ -1,0 +1,49 @@
+---
+# tasks file for tomcat-server
+- name: install java
+  yum:
+    name: java-17-openjdk
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: install java
+  apt:
+    name: java-17-openjdk
+    update_cache: yes
+    state: present
+  when: ansible_os_family == "ubuntu"
+
+- name: Dowloading the tomcat
+  ansible.builtin.get_url:
+    url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.95/bin/apache-tomcat-9.0.95.tar.gz
+    dest: /opt
+    mode: '777'
+   
+- name: Extract the file
+  ansible.builtin.unarchive:
+    src: /opt/apache-tomcat-9.0.95.tar.gz
+    dest: /opt
+    remote_src: yes
+
+- name: changing the server.xml for port number
+  template:
+    src: server.xml.j2
+    dest: /opt/apache-tomcat-9.0.95/conf/server.xml
+    mode: '777'
+
+- name: stopping the tomcat
+  shell: 
+    cmd: nohup /opt/apache-tomcat-9.0.95/bin/shutdown.sh &
+
+- name: starting the tomcaat
+  shell: 
+    cmd: nohup /opt/apache-tomcat-9.0.95/bin/startup.sh &
+
+- name: deploy the content in tomcat
+  copy:
+    src: sample.war
+    dest: /opt/apache-tomcat-9.0.95/webapps
+    mode: '777' 
+
+
+         

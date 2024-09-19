@@ -1,0 +1,5 @@
+---
+- name: Provisioning Server 
+  hosts: web02
+  roles:
+   - tomcat-server
